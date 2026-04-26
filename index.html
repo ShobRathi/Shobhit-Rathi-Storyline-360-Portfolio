@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@700&family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600;700&family=Sora:wght@300;400;600&display=swap');
+
+  :root {
+    --navy: #0B1E3D;
+    --navy-mid: #1A3560;
+    --gold: #D4A843;
+    --gold-light: #F5D78E;
+    --slate: #5A6B82;
+    --light: #F4F6FA;
+    --white: #FFFFFF;
+    --green: #1A7A5E;
+    --green-light: #E4F5EF;
+    --red: #B83232;
+    --red-light: #FDEAEA;
+    --accent-teal: #00BFA5;
+    --accent-violet: #5C35C4;
+    --accent-orange: #E8621A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #0B1E3D;
+    color: #fff;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* ===== NAV HEADER ===== */
+  .suite-header {
+    background: linear-gradient(135deg, #0B1E3D 0%, #1A3560 100%);
+    border-bottom: 1px solid rgba(212,168,67,0.3);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .suite-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: #D4A843;
+    letter-spacing: -0.5px;
+  }
+  .suite-logo span { color: #fff; font-size: 14px; font-family: 'DM Sans', sans-serif; font-weight: 300; display: block; letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+  .badge-row { display: flex; gap: 8px; }
+  .badge { background: rgba(212,168,67,0.15); border: 1px solid rgba(212,168,67,0.4); color: #D4A843; font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 500; letter-spacing: 0.5px; }
+
+  /* ===== TAB NAV ===== */
+  .tabs-container {
+    background: #0d2147;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    overflow-x: auto;
+    gap: 4px;
+    padding: 12px 24px 0;
+    scrollbar-width: none;
+  }
+  .tabs-container::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 10px 16px;
+    border-radius: 8px 8px 0 0;
+    border: 1px solid transparent;
+    border-bottom: none;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .tab-btn:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.8); }
+  .tab-btn.active {
+    background: #F4F6FA;
+    color: #0B1E3D;
+    border-color: rgba(255,255,255,0.1);
+    font-weight: 600;
+  }
+  .tab-num {
+    background: rgba(212,168,67,0.2);
+    color: #D4A843;
+    font-size: 10px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+  }
+  .tab-btn.active .tab-num { background: #D4A843; color: #fff; }
+
+  /* ===== SLIDE PANELS ===== */
+  .slide-panel { display: none; }
+  .slide-panel.active { display: block; }
+
+  /* ===== TEMPLATE 1: COMPLIANCE & ETHICS ===== */
+  .t1-wrap {
+    background: #F4F6FA;
+    min-height: 500px;
+    font-family: 'Outfit', sans-serif;
+    color: #0B1E3D;
+  }
+  .t1-hero {
+    background: linear-gradient(135deg, #0B1E3D 0%, #1A3560 60%, #0B3560 100%);
+    padding: 48px 56px;
+    position: relative;
+    overflow: hidden;
+    min-height: 260px;
+    display: flex;
+    align-items: center;
+  }
+  .t1-hero-bg {
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(45deg, rgba(212,168,67,0.04) 0, rgba(212,168,67,0.04) 1px, transparent 0, transparent 50%);
+    background-size: 24px 24px;
+  }
+  .t1-hero-content { position: relative; z-index: 1; max-width: 480px; }
+  .t1-tag { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #D4A843; font-weight: 600; margin-bottom: 14px; }
+  .t1-title { font-family: 'Playfair Display', serif; font-size: 38px; line-height: 1.15; color: #fff; margin-bottom: 16px; }
+  .t1-title em { color: #D4A843; font-style: normal; }
+  .t1-sub { color: rgba(255,255,255,0.65); font-size: 15px; font-weight: 300; line-height: 1.6; }
+  .t1-hero-right {
+    position: absolute; right: 56px; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .t1-stat-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(212,168,67,0.25);
+    border-radius: 10px;
+    padding: 14px 20px;
+    text-align: center;
+    min-width: 120px;
+  }
+  .t1-stat-card .num { font-family: 'Playfair Display', serif; font-size: 28px; color: #D4A843; }
+  .t1-stat-card .lbl { font-size: 11px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  .t1-content { padding: 36px 56px; }
+  .t1-section-title { font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #5A6B82; margin-bottom: 20px; }
+  .t1-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+  .t1-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    border-left: 4px solid transparent;
+    box-shadow: 0 2px 12px rgba(11,30,61,0.06);
+    transition: transform 0.2s;
+  }
+  .t1-card:hover { transform: translateY(-2px); }
+  .t1-card.gold { border-left-color: #D4A843; }
+  .t1-card.teal { border-left-color: #00BFA5; }
+  .t1-card.red { border-left-color: #B83232; }
+  .t1-card-icon { font-size: 28px; margin-bottom: 12px; }
+  .t1-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; color: #0B1E3D; }
+  .t1-card p { font-size: 13px; color: #5A6B82; line-height: 1.6; }
+
+  /* QUIZ inside T1 */
+  .quiz-box {
+    background: #fff;
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 2px 16px rgba(11,30,61,0.07);
+  }
+  .quiz-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #D4A843; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .quiz-label::after { content: ''; flex: 1; height: 1px; background: rgba(212,168,67,0.25); }
+  .quiz-q { font-size: 17px; font-weight: 600; color: #0B1E3D; margin-bottom: 20px; line-height: 1.5; }
+  .quiz-opts { display: flex; flex-direction: column; gap: 10px; }
+  .quiz-opt {
+    border: 1.5px solid #E0E5F0;
+    border-radius: 8px;
+    padding: 13px 18px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #F8F9FC;
+    color: #0B1E3D;
+    font-family: 'Outfit', sans-serif;
+    text-align: left;
+  }
+  .quiz-opt:hover { border-color: #0B1E3D; background: #EEF1F8; }
+  .quiz-opt.correct { border-color: #1A7A5E; background: #E4F5EF; color: #1A7A5E; font-weight: 600; }
+  .quiz-opt.wrong { border-color: #B83232; background: #FDEAEA; color: #B83232; }
+  .quiz-feedback { margin-top: 14px; font-size: 13px; padding: 12px 16px; border-radius: 8px; display: none; }
+  .quiz-feedback.show { display: flex; align-items: center; gap: 10px; }
+  .quiz-feedback.ok { background: #E4F5EF; color: #1A7A5E; }
+  .quiz-feedback.fail { background: #FDEAEA; color: #B83232; }
+  .quiz-nav { margin-top: 20px; display: flex; align-items: center; justify-content: space-between; }
+  .q-btn {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px; font-weight: 600;
+    padding: 10px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+  .q-btn.primary { background: #0B1E3D; color: #fff; }
+  .q-btn.primary:hover { background: #1A3560; }
+  .q-btn.outline { background: transparent; color: #0B1E3D; border: 1.5px solid #D0D8E8; }
+  .q-btn.outline:hover { border-color: #0B1E3D; }
+  .q-progress { font-size: 13px; color: #5A6B82; }
+
+  /* ===== TEMPLATE 2: CYBERSECURITY ===== */
+  .t2-wrap { background: #070F1A; font-family: 'Space Mono', monospace; color: #fff; min-height: 500px; }
+  .t2-topbar { background: #0D1B2E; border-bottom: 1px solid rgba(0,191,165,0.2); padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; }
+  .t2-logo { color: #00BFA5; font-size: 14px; font-weight: 700; letter-spacing: 2px; }
+  .t2-status { display: flex; gap: 16px; }
+  .t2-dot { width: 8px; height: 8px; border-radius: 50%; background: #00BFA5; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .t2-status-txt { font-size: 11px; color: rgba(0,191,165,0.7); letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
+  .t2-body { display: grid; grid-template-columns: 280px 1fr; min-height: 440px; }
+  .t2-sidebar { background: #0D1B2E; border-right: 1px solid rgba(0,191,165,0.15); padding: 24px; }
+  .t2-sidebar-title { font-size: 10px; letter-spacing: 3px; color: rgba(0,191,165,0.5); text-transform: uppercase; margin-bottom: 16px; }
+  .t2-menu-item { padding: 12px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; margin-bottom: 4px; color: rgba(255,255,255,0.6); border: 1px solid transparent; transition: all 0.2s; display: flex; align-items: center; gap: 10px; }
+  .t2-menu-item:hover { background: rgba(0,191,165,0.08); color: #00BFA5; border-color: rgba(0,191,165,0.15); }
+  .t2-menu-item.active { background: rgba(0,191,165,0.1); color: #00BFA5; border-color: rgba(0,191,165,0.3); }
+  .t2-menu-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+  .t2-main { padding: 28px 36px; }
+  .t2-heading { font-size: 11px; letter-spacing: 3px; color: #00BFA5; text-transform: uppercase; margin-bottom: 8px; }
+  .t2-title { font-size: 26px; color: #fff; margin-bottom: 4px; line-height: 1.2; }
+  .t2-desc { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.8; margin-bottom: 28px; font-family: 'DM Sans', sans-serif; }
+  .t2-threat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 24px; }
+  .t2-threat-card { background: #0D1B2E; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 16px; }
+  .t2-threat-card.high { border-top: 2px solid #E8621A; }
+  .t2-threat-card.med { border-top: 2px solid #D4A843; }
+  .t2-threat-card.low { border-top: 2px solid #00BFA5; }
+  .t2-tc-tag { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+  .t2-tc-tag.high { color: #E8621A; }
+  .t2-tc-tag.med { color: #D4A843; }
+  .t2-tc-tag.low { color: #00BFA5; }
+  .t2-tc-title { font-size: 13px; color: #fff; margin-bottom: 6px; }
+  .t2-tc-desc { font-size: 11px; color: rgba(255,255,255,0.4); font-family: 'DM Sans',sans-serif; line-height: 1.6; }
+  .t2-quiz-panel { background: #0D1B2E; border: 1px solid rgba(0,191,165,0.2); border-radius: 8px; padding: 20px 24px; }
+  .t2-qhdr { font-size: 10px; letter-spacing: 2px; color: #00BFA5; text-transform: uppercase; margin-bottom: 12px; }
+  .t2-q { font-size: 14px; color: #fff; margin-bottom: 16px; font-family: 'DM Sans',sans-serif; line-height: 1.5; }
+  .t2-opts { display: flex; flex-direction: column; gap: 8px; }
+  .t2-opt {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    font-family: 'DM Sans',sans-serif;
+    text-align: left;
+    transition: all 0.2s;
+  }
+  .t2-opt:hover { border-color: rgba(0,191,165,0.4); color: #00BFA5; background: rgba(0,191,165,0.06); }
+  .t2-opt.correct { border-color: #00BFA5; background: rgba(0,191,165,0.12); color: #00BFA5; }
+  .t2-opt.wrong { border-color: #E8621A; background: rgba(232,98,26,0.08); color: #E8621A; }
+
+  /* ===== TEMPLATE 3: LEADERSHIP ===== */
+  .t3-wrap { background: #FBF8F3; font-family: 'Sora', sans-serif; color: #1A0B3B; min-height: 500px; }
+  .t3-header { background: linear-gradient(135deg, #5C35C4 0%, #3B1F8A 100%); padding: 36px 52px; display: flex; align-items: center; justify-content: space-between; }
+  .t3-htext .tag { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 8px; }
+  .t3-htext h1 { font-family: 'Playfair Display', serif; font-size: 34px; color: #fff; line-height: 1.2; margin-bottom: 8px; }
+  .t3-htext p { font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 300; max-width: 320px; }
+  .t3-progress-ring { text-align: center; }
+  .t3-ring-wrap { position: relative; width: 96px; height: 96px; margin: 0 auto 8px; }
+  .t3-ring-svg { transform: rotate(-90deg); }
+  .t3-ring-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 6; }
+  .t3-ring-fg { fill: none; stroke: #D4A843; stroke-width: 6; stroke-dasharray: 263; stroke-dashoffset: 79; stroke-linecap: round; }
+  .t3-ring-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display',serif; font-size: 26px; color: #D4A843; }
+  .t3-ring-lbl { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; }
+  .t3-body { padding: 32px 52px; }
+  .t3-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
+  .t3-pillar { background: #fff; border-radius: 14px; padding: 24px; border: 1px solid rgba(92,53,196,0.1); position: relative; overflow: hidden; }
+  .t3-pillar::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: #5C35C4; }
+  .t3-pillar.alt::before { background: linear-gradient(90deg, #D4A843, #E8A01A); }
+  .t3-pillar-num { font-family: 'Playfair Display',serif; font-size: 44px; color: rgba(92,53,196,0.08); line-height: 1; margin-bottom: 8px; }
+  .t3-pillar.alt .t3-pillar-num { color: rgba(212,168,67,0.12); }
+  .t3-pillar h3 { font-size: 15px; font-weight: 600; color: #1A0B3B; margin-bottom: 6px; }
+  .t3-pillar p { font-size: 12px; color: #5A6B82; line-height: 1.7; font-weight: 300; }
+  .t3-scenario { background: linear-gradient(135deg, #5C35C4, #3B1F8A); border-radius: 14px; padding: 24px 28px; color: #fff; }
+  .t3-sc-tag { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .t3-sc-tag::before { content: ''; display: inline-block; width: 24px; height: 2px; background: #D4A843; }
+  .t3-sc-q { font-size: 16px; font-weight: 600; line-height: 1.5; margin-bottom: 16px; }
+  .t3-sc-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .t3-sc-opt { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 12px 14px; font-size: 12px; color: rgba(255,255,255,0.8); cursor: pointer; transition: all 0.2s; font-family: 'Sora',sans-serif; text-align: left; }
+  .t3-sc-opt:hover { background: rgba(255,255,255,0.18); border-color: rgba(212,168,67,0.5); color: #fff; }
+  .t3-sc-opt.best { background: rgba(212,168,67,0.2); border-color: #D4A843; color: #F5D78E; font-weight: 600; }
+  .t3-sc-opt.poor { background: rgba(184,50,50,0.2); border-color: rgba(184,50,50,0.5); color: rgba(255,180,180,0.9); }
+
+  /* ===== TEMPLATE 4: DEI ===== */
+  .t4-wrap { background: #F8F4FF; font-family: 'DM Sans', sans-serif; color: #1A0B3B; min-height: 500px; }
+  .t4-banner { background: linear-gradient(120deg, #2D1B69 0%, #5C35C4 50%, #8B5CF6 100%); padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 220px; }
+  .t4-banner-left { padding: 36px 40px; display: flex; flex-direction: column; justify-content: center; }
+  .t4-banner-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 10px; }
+  .t4-banner-title { font-family: 'Playfair Display', serif; font-size: 30px; color: #fff; line-height: 1.2; margin-bottom: 10px; }
+  .t4-banner-sub { font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 300; }
+  .t4-banner-right { padding: 24px; display: flex; align-items: center; gap: 14px; justify-content: flex-end; }
+  .t4-circle { border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+  .t4-c1 { width: 64px; height: 64px; background: rgba(255,255,255,0.15); color: #fff; }
+  .t4-c2 { width: 80px; height: 80px; background: rgba(212,168,67,0.3); color: #F5D78E; }
+  .t4-c3 { width: 56px; height: 56px; background: rgba(0,191,165,0.25); color: #7FFBF0; }
+  .t4-c4 { width: 70px; height: 70px; background: rgba(184,50,50,0.2); color: #FFB3B3; }
+  .t4-body { padding: 28px 40px; }
+  .t4-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+  .t4-pill-card { border-radius: 12px; padding: 20px; position: relative; overflow: hidden; }
+  .t4-pill-card.p1 { background: linear-gradient(135deg, #5C35C4 0%, #3B1F8A 100%); color: #fff; }
+  .t4-pill-card.p2 { background: linear-gradient(135deg, #00BFA5 0%, #007A6A 100%); color: #fff; }
+  .t4-pill-card.p3 { background: linear-gradient(135deg, #E8621A 0%, #B83232 100%); color: #fff; }
+  .t4-pill-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .t4-pill-card p { font-size: 12px; opacity: 0.75; line-height: 1.6; }
+  .t4-pill-card .icon { font-size: 28px; margin-bottom: 10px; }
+  .t4-reflect { background: #fff; border-radius: 14px; padding: 24px; border-left: 4px solid #5C35C4; }
+  .t4-reflect-tag { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #5C35C4; margin-bottom: 12px; }
+  .t4-reflect-q { font-size: 16px; font-weight: 600; color: #1A0B3B; margin-bottom: 16px; }
+  .t4-reflect-opts { display: flex; flex-direction: column; gap: 8px; }
+  .t4-ropt { border: 1.5px solid #E8E0F8; border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #3B2069; cursor: pointer; background: #F8F4FF; transition: all 0.2s; font-family: 'DM Sans',sans-serif; text-align: left; }
+  .t4-ropt:hover { border-color: #5C35C4; background: #EDE5FF; }
+  .t4-ropt.selected { border-color: #5C35C4; background: #EDE5FF; font-weight: 600; color: #3B1F8A; }
+
+  /* ===== TEMPLATE 5: PERFORMANCE MANAGEMENT ===== */
+  .t5-wrap { background: #F0F4F8; font-family: 'Outfit', sans-serif; color: #1A2B3C; min-height: 500px; }
+  .t5-header { background: #1A2B3C; padding: 28px 44px; display: flex; align-items: center; justify-content: space-between; }
+  .t5-header-left .t5-crumb { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+  .t5-header-left h1 { font-family: 'Playfair Display',serif; font-size: 28px; color: #fff; }
+  .t5-metrics { display: flex; gap: 12px; }
+  .t5-m { text-align: center; background: rgba(255,255,255,0.07); border-radius: 8px; padding: 12px 18px; border-top: 2px solid; }
+  .t5-m.gold { border-color: #D4A843; }
+  .t5-m.teal { border-color: #00BFA5; }
+  .t5-m.orange { border-color: #E8621A; }
+  .t5-m .mn { font-family: 'Playfair Display',serif; font-size: 24px; color: #fff; }
+  .t5-m .ml { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+  .t5-body { padding: 28px 44px; }
+  .t5-two-col { display: grid; grid-template-columns: 1fr 320px; gap: 24px; }
+  .t5-main-card { background: #fff; border-radius: 14px; padding: 24px; }
+  .t5-mc-title { font-size: 15px; font-weight: 700; color: #1A2B3C; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .t5-mc-title span { font-size: 11px; font-weight: 400; background: #E8F5F0; color: #1A7A5E; padding: 3px 10px; border-radius: 20px; }
+  .t5-competency { margin-bottom: 16px; }
+  .t5-comp-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .t5-comp-label { font-size: 13px; color: #1A2B3C; font-weight: 500; }
+  .t5-comp-val { font-size: 13px; font-weight: 700; }
+  .t5-comp-val.hi { color: #1A7A5E; }
+  .t5-comp-val.mid { color: #D4A843; }
+  .t5-bar-bg { background: #F0F4F8; border-radius: 4px; height: 8px; }
+  .t5-bar { height: 8px; border-radius: 4px; }
+  .t5-bar.green { background: linear-gradient(90deg, #1A7A5E, #00BFA5); }
+  .t5-bar.gold { background: linear-gradient(90deg, #B8860B, #D4A843); }
+  .t5-bar.blue { background: linear-gradient(90deg, #1A3560, #378ADD); }
+  .t5-sidebar-card { background: #fff; border-radius: 14px; padding: 20px; }
+  .t5-sc-title { font-size: 14px; font-weight: 700; margin-bottom: 14px; color: #1A2B3C; }
+  .t5-quiz-q { font-size: 14px; font-weight: 600; color: #1A2B3C; margin-bottom: 14px; line-height: 1.5; }
+  .t5-quiz-opts { display: flex; flex-direction: column; gap: 8px; }
+  .t5-qopt { border: 1.5px solid #E0E8F0; border-radius: 8px; padding: 11px 14px; font-size: 13px; color: #1A2B3C; cursor: pointer; background: #F8FAFB; transition: all 0.2s; font-family: 'Outfit',sans-serif; text-align: left; }
+  .t5-qopt:hover { border-color: #1A2B3C; background: #EBF0F5; }
+  .t5-qopt.correct { border-color: #1A7A5E; background: #E4F5EF; color: #1A7A5E; font-weight: 600; }
+  .t5-qopt.wrong { border-color: #B83232; background: #FDEAEA; color: #B83232; }
+
+  /* ===== TEMPLATE 6: ONBOARDING ===== */
+  .t6-wrap { background: #fff; font-family: 'DM Sans', sans-serif; min-height: 500px; }
+  .t6-hero { background: linear-gradient(135deg, #0B1E3D, #1A3560); padding: 40px 52px; display: flex; gap: 48px; align-items: center; }
+  .t6-hero-text { flex: 1; }
+  .t6-hero-tag { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #D4A843; margin-bottom: 10px; }
+  .t6-hero-h1 { font-family: 'Playfair Display',serif; font-size: 36px; color: #fff; line-height: 1.15; margin-bottom: 10px; }
+  .t6-hero-sub { font-size: 14px; color: rgba(255,255,255,0.6); font-weight: 300; margin-bottom: 20px; }
+  .t6-hero-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .t6-pill { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.75); font-size: 12px; padding: 6px 14px; border-radius: 20px; }
+  .t6-hero-steps { display: flex; flex-direction: column; gap: 10px; min-width: 220px; }
+  .t6-step { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.06); border-radius: 10px; padding: 12px 16px; border: 1px solid rgba(255,255,255,0.08); }
+  .t6-step-num { width: 32px; height: 32px; border-radius: 50%; background: #D4A843; color: #0B1E3D; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .t6-step-done { background: #1A7A5E; color: #fff; }
+  .t6-step-text { font-size: 13px; color: rgba(255,255,255,0.8); }
+  .t6-step-text strong { display: block; font-weight: 600; color: #fff; }
+  .t6-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .t6-left { padding: 28px 40px; border-right: 1px solid #F0F0F0; }
+  .t6-right { padding: 28px 40px; background: #F8F9FC; }
+  .t6-section-lbl { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #5A6B82; margin-bottom: 16px; }
+  .t6-value-cards { display: flex; flex-direction: column; gap: 10px; }
+  .t6-vc { background: #fff; border: 1px solid #EAECF2; border-radius: 10px; padding: 16px; display: flex; gap: 14px; align-items: flex-start; }
+  .t6-vc-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .t6-vc-icon.navy { background: rgba(11,30,61,0.08); }
+  .t6-vc-icon.gold { background: rgba(212,168,67,0.12); }
+  .t6-vc-icon.teal { background: rgba(0,191,165,0.1); }
+  .t6-vc h4 { font-size: 14px; font-weight: 600; color: #0B1E3D; margin-bottom: 3px; }
+  .t6-vc p { font-size: 12px; color: #5A6B82; line-height: 1.6; }
+  .t6-quiz-section {}
+  .t6-quiz-hdr { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #D4A843; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .t6-quiz-hdr::after { content: ''; flex: 1; height: 1px; background: rgba(212,168,67,0.25); }
+  .t6-quiz-q { font-size: 15px; font-weight: 600; color: #0B1E3D; margin-bottom: 14px; line-height: 1.5; }
+  .t6-opts { display: flex; flex-direction: column; gap: 8px; }
+  .t6-opt { border: 1.5px solid #E0E5F0; border-radius: 8px; padding: 11px 16px; font-size: 13px; cursor: pointer; background: #fff; color: #0B1E3D; transition: all 0.2s; font-family: 'DM Sans',sans-serif; text-align: left; }
+  .t6-opt:hover { border-color: #0B1E3D; background: #EEF1F8; }
+  .t6-opt.correct { border-color: #1A7A5E; background: #E4F5EF; color: #1A7A5E; font-weight: 600; }
+  .t6-opt.wrong { border-color: #B83232; background: #FDEAEA; color: #B83232; }
+
+  /* ===== DOWNLOAD PANEL ===== */
+  .dl-panel {
+    background: #F4F6FA;
+    border-top: 1px solid rgba(11,30,61,0.1);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .dl-label { font-size: 13px; color: #5A6B82; font-family: 'DM Sans',sans-serif; }
+  .dl-btn {
+    font-family: 'DM Sans',sans-serif;
+    font-size: 13px; font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .dl-btn.primary { background: #0B1E3D; color: #fff; }
+  .dl-btn.primary:hover { background: #1A3560; }
+  .dl-btn.gold-btn { background: #D4A843; color: #fff; }
+  .dl-btn.gold-btn:hover { background: #B8920E; }
+  .dl-btn.outline { background: transparent; color: #0B1E3D; border: 1.5px solid #D0D8E8; }
+  .dl-btn.outline:hover { border-color: #0B1E3D; background: #EEF1F8; }
+  .dl-spacer { flex: 1; }
+  .dl-note { font-size: 11px; color: #8A9BB0; font-family: 'DM Sans',sans-serif; }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 999;
+    background: #1A3560; color: #fff;
+    padding: 12px 20px; border-radius: 10px; font-size: 13px;
+    font-family: 'DM Sans',sans-serif;
+    opacity: 0; transform: translateY(10px);
+    transition: all 0.3s;
+    pointer-events: none;
+    border-left: 3px solid #D4A843;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="suite-header">
+  <div class="suite-logo">
+    CorpLearn Studio
+    <span>Storyline 360 Template Suite</span>
+  </div>
+  <div class="badge-row">
+    <span class="badge">6 Templates</span>
+    <span class="badge">SCORM Ready</span>
+    <span class="badge">Enterprise Grade</span>
+  </div>
+</div>
+
+<div class="tabs-container">
+  <button class="tab-btn active" onclick="switchTab(0)"><span class="tab-num">1</span> Compliance & Ethics</button>
+  <button class="tab-btn" onclick="switchTab(1)"><span class="tab-num">2</span> Cybersecurity</button>
+  <button class="tab-btn" onclick="switchTab(2)"><span class="tab-num">3</span> Leadership</button>
+  <button class="tab-btn" onclick="switchTab(3)"><span class="tab-num">4</span> DEI & Inclusion</button>
+  <button class="tab-btn" onclick="switchTab(4)"><span class="tab-num">5</span> Performance Mgmt</button>
+  <button class="tab-btn" onclick="switchTab(5)"><span class="tab-num">6</span> Onboarding</button>
+</div>
+
+<!-- ===== TEMPLATE 1 ===== -->
+<div class="slide-panel active" id="panel-0">
+<div class="t1-wrap">
+  <div class="t1-hero">
+    <div class="t1-hero-bg"></div>
+    <div class="t1-hero-content">
+      <div class="t1-tag">Module 01 — Corporate Compliance</div>
+      <div class="t1-title">Ethics & <em>Integrity</em><br>in the Workplace</div>
+      <div class="t1-sub">Understanding your obligations under our Code of Conduct and global regulatory frameworks.</div>
+    </div>
+    <div class="t1-hero-right">
+      <div class="t1-stat-card"><div class="num">45</div><div class="lbl">min</div></div>
+      <div class="t1-stat-card"><div class="num">3</div><div class="lbl">quizzes</div></div>
+      <div class="t1-stat-card"><div class="num">CPE</div><div class="lbl">credit</div></div>
+    </div>
+  </div>
+  <div class="t1-content">
+    <div class="t1-section-title">Core Principles</div>
+    <div class="t1-cards">
+      <div class="t1-card gold">
+        <div class="t1-card-icon">⚖️</div>
+        <h3>Conflicts of Interest</h3>
+        <p>Recognize and disclose situations where personal interests may conflict with your duties to the organization.</p>
+      </div>
+      <div class="t1-card teal">
+        <div class="t1-card-icon">🔒</div>
+        <h3>Confidentiality</h3>
+        <p>Protect sensitive business data, trade secrets, and personal employee information in all circumstances.</p>
+      </div>
+      <div class="t1-card red">
+        <div class="t1-card-icon">🚩</div>
+        <h3>Anti-Bribery & Corruption</h3>
+        <p>Zero tolerance for bribery in all forms — including gifts, hospitality, and facilitation payments.</p>
+      </div>
+    </div>
+    <div class="t1-section-title">Knowledge Check</div>
+    <div class="quiz-box">
+      <div class="quiz-label">Quiz 1 of 3</div>
+      <div class="quiz-q">A supplier offers you tickets to a high-profile sports event valued at $500. Your company's gift policy allows gifts up to $50. What is the correct course of action?</div>
+      <div class="quiz-opts" id="t1-opts">
+        <button class="quiz-opt" onclick="answerT1(this, false)">Accept the tickets — it's a relationship-building gesture</button>
+        <button class="quiz-opt" onclick="answerT1(this, true)">Politely decline and inform your manager and compliance team</button>
+        <button class="quiz-opt" onclick="answerT1(this, false)">Accept and share the tickets with your team</button>
+        <button class="quiz-opt" onclick="answerT1(this, false)">Ask the supplier to reduce the value to $50</button>
+      </div>
+      <div class="quiz-feedback" id="t1-feedback"></div>
+      <div class="quiz-nav">
+        <span class="q-progress">Progress: 1 / 3</span>
+        <div style="display:flex;gap:8px">
+          <button class="q-btn outline">Previous</button>
+          <button class="q-btn primary">Next Question →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="dl-panel">
+  <div class="dl-label">Template 1: Compliance & Ethics</div>
+  <button class="dl-btn primary" onclick="downloadStory('compliance_ethics')">⬇ Download .story</button>
+  <button class="dl-btn outline" onclick="downloadStory('compliance_ethics_pptx')">⬇ Export as .pptx</button>
+  <div class="dl-spacer"></div>
+  <div class="dl-note">Articulate Storyline 360 required to open .story files</div>
+</div>
+</div>
+
+<!-- ===== TEMPLATE 2 ===== -->
+<div class="slide-panel" id="panel-1">
+<div class="t2-wrap">
+  <div class="t2-topbar">
+    <div class="t2-logo">// CYBERSEC_ACADEMY</div>
+    <div class="t2-status">
+      <div class="t2-status-txt"><div class="t2-dot"></div> LIVE TRAINING SESSION</div>
+    </div>
+  </div>
+  <div class="t2-body">
+    <div class="t2-sidebar">
+      <div class="t2-sidebar-title">// modules</div>
+      <div class="t2-menu-item active"><span class="t2-menu-dot"></span>Threat Landscape</div>
+      <div class="t2-menu-item"><span class="t2-menu-dot"></span>Phishing Attacks</div>
+      <div class="t2-menu-item"><span class="t2-menu-dot"></span>Social Engineering</div>
+      <div class="t2-menu-item"><span class="t2-menu-dot"></span>Password Hygiene</div>
+      <div class="t2-menu-item"><span class="t2-menu-dot"></span>Data Classification</div>
+      <div class="t2-menu-item"><span class="t2-menu-dot"></span>Incident Response</div>
+      <div style="margin-top:20px;border-top:1px solid rgba(0,191,165,0.1);padding-top:16px;">
+        <div class="t2-sidebar-title">// your progress</div>
+        <div style="background:#0A1525;border-radius:6px;padding:12px;text-align:center;">
+          <div style="font-size:28px;color:#00BFA5;font-weight:700;">17%</div>
+          <div style="font-size:10px;color:rgba(0,191,165,0.5);margin-top:4px;letter-spacing:1px;">COMPLETE</div>
+          <div style="background:rgba(0,191,165,0.1);border-radius:3px;height:4px;margin-top:10px;"><div style="width:17%;background:#00BFA5;height:4px;border-radius:3px;"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="t2-main">
+      <div class="t2-heading">// module_01 — threat_landscape</div>
+      <div class="t2-title">Current Threat<br>Taxonomy</div>
+      <div class="t2-desc">Familiarize yourself with the most common attack vectors targeting enterprise environments in 2025.</div>
+      <div class="t2-threat-grid">
+        <div class="t2-threat-card high">
+          <div class="t2-tc-tag high">HIGH RISK</div>
+          <div class="t2-tc-title">Spear Phishing</div>
+          <div class="t2-tc-desc">Highly targeted email attacks impersonating trusted senders to extract credentials or deploy malware.</div>
+        </div>
+        <div class="t2-threat-card high">
+          <div class="t2-tc-tag high">HIGH RISK</div>
+          <div class="t2-tc-title">Ransomware</div>
+          <div class="t2-tc-desc">Encryption-based extortion that locks critical systems. Average enterprise ransom: $4.5M USD.</div>
+        </div>
+        <div class="t2-threat-card med">
+          <div class="t2-tc-tag med">MODERATE</div>
+          <div class="t2-tc-title">Insider Threats</div>
+          <div class="t2-tc-desc">Intentional or negligent data exfiltration from within the organization perimeter.</div>
+        </div>
+        <div class="t2-threat-card low">
+          <div class="t2-tc-tag low">AWARENESS</div>
+          <div class="t2-tc-title">Shadow IT</div>
+          <div class="t2-tc-desc">Unsanctioned apps or services that bypass security controls and create ungoverned data flows.</div>
+        </div>
+      </div>
+      <div class="t2-quiz-panel">
+        <div class="t2-qhdr">// knowledge_check</div>
+        <div class="t2-q">An email from "IT_Support@corp-helpdesk.net" asks you to verify your credentials via a link. Your company's domain is corp.com. What should you do?</div>
+        <div class="t2-opts" id="t2-opts">
+          <button class="t2-opt" onclick="answerT2(this, false)">Click the link — it looks official enough</button>
+          <button class="t2-opt" onclick="answerT2(this, true)">Do not click. Report to security@corp.com and delete</button>
+          <button class="t2-opt" onclick="answerT2(this, false)">Forward to colleagues to warn them</button>
+          <button class="t2-opt" onclick="answerT2(this, false)">Reply asking for more information</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="dl-panel">
+  <div class="dl-label">Template 2: Cybersecurity Awareness</div>
+  <button class="dl-btn primary" onclick="downloadStory('cybersecurity_awareness')">⬇ Download .story</button>
+  <button class="dl-btn outline" onclick="downloadStory('cybersec_pptx')">⬇ Export as .pptx</button>
+  <div class="dl-spacer"></div>
+  <div class="dl-note">Articulate Storyline 360 required to open .story files</div>
+</div>
+</div>
+
+<!-- ===== TEMPLATE 3 ===== -->
+<div class="slide-panel" id="panel-2">
+<div class="t3-wrap">
+  <div class="t3-header">
+    <div class="t3-htext">
+      <div class="tag">Executive Development Series</div>
+      <h1>Leadership<br>Excellence Program</h1>
+      <p>Developing strategic leaders who drive culture, performance, and organizational resilience.</p>
+    </div>
+    <div class="t3-progress-ring">
+      <div class="t3-ring-wrap">
+        <svg class="t3-ring-svg" width="96" height="96" viewBox="0 0 96 96">
+          <circle class="t3-ring-bg" cx="48" cy="48" r="42"/>
+          <circle class="t3-ring-fg" cx="48" cy="48" r="42"/>
+        </svg>
+        <div class="t3-ring-num">70%</div>
+      </div>
+      <div class="t3-ring-lbl">Progress</div>
+    </div>
+  </div>
+  <div class="t3-body">
+    <div style="font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#5A6B82;margin-bottom:16px;">Four Pillars of Leadership</div>
+    <div class="t3-grid">
+      <div class="t3-pillar">
+        <div class="t3-pillar-num">01</div>
+        <h3>Strategic Vision</h3>
+        <p>Articulating a clear, compelling direction that aligns team effort with organizational objectives and inspires sustained commitment.</p>
+      </div>
+      <div class="t3-pillar alt">
+        <div class="t3-pillar-num">02</div>
+        <h3>Psychological Safety</h3>
+        <p>Creating environments where people feel safe to speak up, take risks, share ideas, and admit mistakes without fear of repercussion.</p>
+      </div>
+      <div class="t3-pillar">
+        <div class="t3-pillar-num">03</div>
+        <h3>Decision Making</h3>
+        <p>Applying structured frameworks to high-stakes decisions while managing cognitive biases and competing stakeholder interests.</p>
+      </div>
+      <div class="t3-pillar alt">
+        <div class="t3-pillar-num">04</div>
+        <h3>Adaptive Coaching</h3>
+        <p>Flexing your leadership style to unlock the potential of individuals at different stages of development and competency.</p>
+      </div>
+    </div>
+    <div class="t3-scenario">
+      <div class="t3-sc-tag">Scenario-Based Quiz</div>
+      <div class="t3-sc-q">Your top performer informs you they feel undervalued and are considering leaving. You have no budget for a raise. As their leader, what is your most effective response?</div>
+      <div class="t3-sc-opts" id="t3-opts">
+        <button class="t3-sc-opt" onclick="answerT3(this, false)">Acknowledge their feelings and promise a raise next quarter</button>
+        <button class="t3-sc-opt" onclick="answerT3(this, true)">Schedule a deep-dive conversation to understand motivators beyond compensation and co-create a development plan</button>
+        <button class="t3-sc-opt" onclick="answerT3(this, false)">Escalate to HR and let them manage the situation</button>
+        <button class="t3-sc-opt" onclick="answerT3(this, false)">Tell them their performance isn't as strong as they believe</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="dl-panel">
+  <div class="dl-label">Template 3: Leadership Excellence</div>
+  <button class="dl-btn primary" onclick="downloadStory('leadership_excellence')">⬇ Download .story</button>
+  <button class="dl-btn gold-btn" onclick="downloadStory('leadership_pptx')">⬇ Export as .pptx</button>
+  <div class="dl-spacer"></div>
+  <div class="dl-note">Articulate Storyline 360 required to open .story files</div>
+</div>
+</div>
+
+<!-- ===== TEMPLATE 4 ===== -->
+<div class="slide-panel" id="panel-3">
+<div class="t4-wrap">
+  <div class="t4-banner">
+    <div class="t4-banner-left">
+      <div class="t4-banner-tag">Module 04 — People & Culture</div>
+      <div class="t4-banner-title">Diversity, Equity<br>& Inclusion</div>
+      <div class="t4-banner-sub">Building an organization where every person can contribute their best work.</div>
+    </div>
+    <div class="t4-banner-right">
+      <div class="t4-circle t4-c1">HE</div>
+      <div class="t4-circle t4-c2">SHE</div>
+      <div class="t4-circle t4-c3">THEY</div>
+      <div class="t4-circle t4-c4">ALL</div>
+    </div>
+  </div>
+  <div class="t4-body">
+    <div style="font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#5A6B82;margin-bottom:16px;">Three Dimensions</div>
+    <div class="t4-pillars">
+      <div class="t4-pill-card p1"><div class="icon">🌐</div><h3>Diversity</h3><p>Representation of different backgrounds, identities, experiences, and perspectives across all levels.</p></div>
+      <div class="t4-pill-card p2"><div class="icon">⚖️</div><h3>Equity</h3><p>Fair access to opportunities, resources, and support — adjusted for each person's starting point.</p></div>
+      <div class="t4-pill-card p3"><div class="icon">🤝</div><h3>Inclusion</h3><p>Active effort to ensure every voice is heard, valued, and integrated into decisions.</p></div>
+    </div>
+    <div class="t4-reflect">
+      <div class="t4-reflect-tag">Reflection Quiz</div>
+      <div class="t4-reflect-q">During a brainstorming session, a colleague from a different background shares an idea that is immediately dismissed without discussion. As a bystander, what is the most inclusive action?</div>
+      <div class="t4-reflect-opts" id="t4-opts">
+        <button class="t4-ropt" onclick="answerT4(this, false)">Say nothing — it's not your place to intervene</button>
+        <button class="t4-ropt" onclick="answerT4(this, false)">Privately tell the colleague you thought it was a good idea</button>
+        <button class="t4-ropt" onclick="answerT4(this, true)">Amplify the idea: "I think [name]'s point deserves more discussion — can we explore that?"</button>
+        <button class="t4-ropt" onclick="answerT4(this, false)">Report the incident to HR after the meeting</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="dl-panel">
+  <div class="dl-label">Template 4: DEI & Inclusion</div>
+  <button class="dl-btn primary" onclick="downloadStory('dei_inclusion')">⬇ Download .story</button>
+  <button class="dl-btn outline" onclick="downloadStory('dei_pptx')">⬇ Export as .pptx</button>
+  <div class="dl-spacer"></div>
+  <div class="dl-note">Articulate Storyline 360 required to open .story files</div>
+</div>
+</div>
+
+<!-- ===== TEMPLATE 5 ===== -->
+<div class="slide-panel" id="panel-4">
+<div class="t5-wrap">
+  <div class="t5-header">
+    <div class="t5-header-left">
+      <div class="t5-crumb">Module 05 — People Management</div>
+      <h1>Performance Management</h1>
+    </div>
+    <div class="t5-metrics">
+      <div class="t5-m gold"><div class="mn">OKR</div><div class="ml">Framework</div></div>
+      <div class="t5-m teal"><div class="mn">360°</div><div class="ml">Feedback</div></div>
+      <div class="t5-m orange"><div class="mn">PIP</div><div class="ml">Process</div></div>
+    </div>
+  </div>
+  <div class="t5-body">
+    <div class="t5-two-col">
+      <div class="t5-main-card">
+        <div class="t5-mc-title">Competency Assessment Framework <span>Q4 Cycle</span></div>
+        <div class="t5-competency">
+          <div class="t5-comp-row"><span class="t5-comp-label">Strategic Thinking</span><span class="t5-comp-val hi">4.2 / 5.0</span></div>
+          <div class="t5-bar-bg"><div class="t5-bar green" style="width:84%"></div></div>
+        </div>
+        <div class="t5-competency">
+          <div class="t5-comp-row"><span class="t5-comp-label">Cross-functional Collaboration</span><span class="t5-comp-val hi">3.9 / 5.0</span></div>
+          <div class="t5-bar-bg"><div class="t5-bar blue" style="width:78%"></div></div>
+        </div>
+        <div class="t5-competency">
+          <div class="t5-comp-row"><span class="t5-comp-label">Communication & Influence</span><span class="t5-comp-val mid">3.1 / 5.0</span></div>
+          <div class="t5-bar-bg"><div class="t5-bar gold" style="width:62%"></div></div>
+        </div>
+        <div class="t5-competency">
+          <div class="t5-comp-row"><span class="t5-comp-label">Results & Accountability</span><span class="t5-comp-val hi">4.5 / 5.0</span></div>
+          <div class="t5-bar-bg"><div class="t5-bar green" style="width:90%"></div></div>
+        </div>
+        <div class="t5-competency">
+          <div class="t5-comp-row"><span class="t5-comp-label">People Development</span><span class="t5-comp-val mid">2.8 / 5.0</span></div>
+          <div class="t5-bar-bg"><div class="t5-bar gold" style="width:56%"></div></div>
+        </div>
+        <div style="margin-top:20px;padding:14px;background:#F8FAFB;border-radius:8px;border-left:3px solid #D4A843;">
+          <div style="font-size:12px;font-weight:600;color:#1A2B3C;margin-bottom:4px;">Development Focus Area</div>
+          <div style="font-size:12px;color:#5A6B82;line-height:1.6;">Communication & Influence and People Development are priority growth areas for the next performance cycle. Your manager will discuss targeted action plans.</div>
+        </div>
+      </div>
+      <div class="t5-sidebar-card">
+        <div class="t5-sc-title">⚡ Knowledge Check</div>
+        <div class="t5-quiz-q">An employee consistently misses deadlines but produces high-quality work when they do submit. According to best-practice performance management, what is the first step?</div>
+        <div class="t5-quiz-opts" id="t5-opts">
+          <button class="t5-qopt" onclick="answerT5(this,false)">Immediately place them on a Performance Improvement Plan</button>
+          <button class="t5-qopt" onclick="answerT5(this,true)">Schedule a private conversation to understand root causes before taking formal action</button>
+          <button class="t5-qopt" onclick="answerT5(this,false)">Document the pattern and escalate to HR</button>
+          <button class="t5-qopt" onclick="answerT5(this,false)">Reduce their workload to improve deadline adherence</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="dl-panel">
+  <div class="dl-label">Template 5: Performance Management</div>
+  <button class="dl-btn primary" onclick="downloadStory('performance_management')">⬇ Download .story</button>
+  <button class="dl-btn outline" onclick="downloadStory('perf_pptx')">⬇ Export as .pptx</button>
+  <div class="dl-spacer"></div>
+  <div class="dl-note">Articulate Storyline 360 required to open .story files</div>
+</div>
+</div>
+
+<!-- ===== TEMPLATE 6 ===== -->
+<div class="slide-panel" id="panel-5">
+<div class="t6-wrap">
+  <div class="t6-hero">
+    <div class="t6-hero-text">
+      <div class="t6-hero-tag">New Employee Experience</div>
+      <div class="t6-hero-h1">Welcome to<br>the Organization</div>
+      <div class="t6-hero-sub">Your first 90 days are the most important. This program will set you up for success.</div>
+      <div class="t6-hero-pills">
+        <span class="t6-pill">Company Values</span>
+        <span class="t6-pill">Org Structure</span>
+        <span class="t6-pill">Policies & Benefits</span>
+        <span class="t6-pill">Tools & Systems</span>
+      </div>
+    </div>
+    <div class="t6-hero-steps">
+      <div class="t6-step"><div class="t6-step-num t6-step-done">✓</div><div class="t6-step-text"><strong>Day 1</strong>Orientation & IT setup</div></div>
+      <div class="t6-step"><div class="t6-step-num" style="background:#D4A843;color:#0B1E3D;">2</div><div class="t6-step-text"><strong>Week 1</strong>Team introductions</div></div>
+      <div class="t6-step"><div class="t6-step-num" style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);">3</div><div class="t6-step-text"><strong>Day 30</strong>First milestone check-in</div></div>
+    </div>
+  </div>
+  <div class="t6-body">
+    <div class="t6-left">
+      <div class="t6-section-lbl">Our Core Values</div>
+      <div class="t6-value-cards">
+        <div class="t6-vc"><div class="t6-vc-icon navy">🌟</div><div><h4>Integrity First</h4><p>We do the right thing even when no one is watching. Trust is our most valuable asset.</p></div></div>
+        <div class="t6-vc"><div class="t6-vc-icon gold">💡</div><div><h4>Relentless Innovation</h4><p>We question assumptions, experiment boldly, and embrace change as a competitive advantage.</p></div></div>
+        <div class="t6-vc"><div class="t6-vc-icon teal">🤝</div><div><h4>People are Everything</h4><p>Our team's wellbeing, growth, and inclusion are non-negotiable commitments — not perks.</p></div></div>
+      </div>
+    </div>
+    <div class="t6-right">
+      <div class="t6-section-lbl">Knowledge Check</div>
+      <div class="t6-quiz-hdr">Quiz — Day 1</div>
+      <div class="t6-quiz-q">According to our Integrity First value, if you discover a potential compliance issue in your department, what should you do?</div>
+      <div class="t6-opts" id="t6-opts">
+        <button class="t6-opt" onclick="answerT6(this,false)">Wait to see if it resolves on its own</button>
+        <button class="t6-opt" onclick="answerT6(this,false)">Discuss it with your direct team only</button>
+        <button class="t6-opt" onclick="answerT6(this,true)">Report it through the Ethics Hotline or to your manager immediately</button>
+        <button class="t6-opt" onclick="answerT6(this,false)">Document it for the next quarterly review</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="dl-panel">
+  <div class="dl-label">Template 6: New Employee Onboarding</div>
+  <button class="dl-btn primary" onclick="downloadStory('onboarding_new_employee')">⬇ Download .story</button>
+  <button class="dl-btn gold-btn" onclick="downloadStory('onboarding_pptx')">⬇ Export as .pptx</button>
+  <div class="dl-spacer"></div>
+  <div class="dl-note">Articulate Storyline 360 required to open .story files</div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function switchTab(n) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===n));
+  document.querySelectorAll('.slide-panel').forEach((p,i) => p.classList.toggle('active', i===n));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function downloadStory(name) {
+  showToast('📋 Storyline 360 .story files must be created inside Articulate Storyline 360. See guide below.');
+}
+
+function lockOpts(container) {
+  container.querySelectorAll('button').forEach(b => b.style.pointerEvents = 'none');
+}
+
+function answerT1(el, correct) {
+  const opts = document.getElementById('t1-opts');
+  lockOpts(opts);
+  const fb = document.getElementById('t1-feedback');
+  if (correct) {
+    el.classList.add('correct');
+    fb.className = 'quiz-feedback show ok';
+    fb.innerHTML = '✓ Correct! Always decline gifts above policy limits and report to compliance.';
+  } else {
+    el.classList.add('wrong');
+    fb.className = 'quiz-feedback show fail';
+    fb.innerHTML = '✗ Incorrect. The right answer is to decline and report. See Anti-Bribery Policy §4.2.';
+  }
+}
+function answerT2(el, correct) {
+  const opts = document.getElementById('t2-opts');
+  lockOpts(opts);
+  if (correct) el.classList.add('correct'); else el.classList.add('wrong');
+}
+function answerT3(el, correct) {
+  const opts = document.getElementById('t3-opts');
+  lockOpts(opts);
+  if (correct) el.classList.add('best'); else el.classList.add('poor');
+}
+function answerT4(el, correct) {
+  const opts = document.getElementById('t4-opts');
+  lockOpts(opts);
+  if (correct) el.classList.add('selected');
+  else { el.style.opacity = '0.5'; el.style.textDecoration = 'line-through'; }
+}
+function answerT5(el, correct) {
+  const opts = document.getElementById('t5-opts');
+  lockOpts(opts);
+  if (correct) el.classList.add('correct'); else el.classList.add('wrong');
+}
+function answerT6(el, correct) {
+  const opts = document.getElementById('t6-opts');
+  lockOpts(opts);
+  if (correct) el.classList.add('correct'); else el.classList.add('wrong');
+}
+</script>
+</body>
+</html>
